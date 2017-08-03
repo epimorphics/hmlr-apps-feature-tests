@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'cucumber'
-gem 'capybara'
-gem 'rspec'
 gem 'byebug'
+gem 'capybara'
 gem 'capybara-selenium'
 gem 'chromedriver-helper'
+gem 'cucumber'
+gem 'rspec'
