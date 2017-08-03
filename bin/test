@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+if [ -e test-output/* ]
+then
+  rm test-output/*
+fi
+mkdir -p test-output
+wget -O test-output/test-query "http://$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
+result=$?
+if [ $result -ne 0 ]
+then
+  echo test query failed
+  exit $result
+fi
+
+
+bundle exec cucumber
