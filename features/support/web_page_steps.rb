@@ -81,17 +81,17 @@ end
 Then(/it should have rules from stylesheet matching "(.*)"/) do |stylesheet_regex|
   script = %{
     $TEST_RESULT = (function() {
-      result = false;
-      for ( i=0 ; i < document.styleSheets.length ; i++) {
-         stylesheet = document.styleSheets[i]
-         if ( stylesheet.href != null && stylesheet.href.match('#{stylesheet_regex}') ) {
+      var result = false;
+      for ( i=0; i < document.styleSheets.length; i++ ) {
+         stylesheet = document.styleSheets[i];
+         if ( stylesheet.href && stylesheet.href.match(/#{stylesheet_regex}/) ) {
            // crude test for whether stylesheet was downloaded
            // fails on empty stylesheets
            result = (stylesheet.cssRules.length > 0);
            break;
          }
       }
-       return result;
+      return result;
     })();
   }
   page.execute_script(script)
