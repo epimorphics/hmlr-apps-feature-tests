@@ -8,6 +8,7 @@ require 'byebug'
 # Pass the test host in from the environment
 HOST = ENV['TEST_HOST'] || '10.10.10.10'
 BASE = ''.freeze
+Capybara.run_server = false
 Capybara.app_host = "http://#{HOST}"
 
 # Register a driver for visible Chrome using Selenium
@@ -18,7 +19,8 @@ end
 # Register a driver for headless Chrome using Selenium
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless disable-gpu] }
+    chromeOptions: { args: %w[headless disable-gpu] },
+    loggingPrefs: { browser: 'ALL' }
   )
 
   Capybara::Selenium::Driver.new(app,
@@ -36,4 +38,17 @@ Capybara.javascript_driver = driver
 Then(/^breakpoint$/) do
   byebug # rubocop:disable Lint/Debugger
   puts 'resuming ...'
+end
+
+# Check the browser console.log after the scenario runs. If it's not empty,
+# show it as output
+After do |scenario|
+  console_logs = page.driver.browser.manage.logs.get(:browser)
+
+  unless !console_logs || console_logs.empty?
+    puts "'#{scenario.name}' -- console log contains:"
+    console_logs.each do |log|
+      puts log.inspect
+    end
+  end
 end
