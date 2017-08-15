@@ -84,7 +84,7 @@ Then(/it should have rules from stylesheet matching "(.*)"/) do |stylesheet_rege
       var result = false;
       for ( i=0; i < document.styleSheets.length; i++ ) {
          stylesheet = document.styleSheets[i];
-         if ( stylesheet.href && stylesheet.href.match(/#{stylesheet_regex}/) ) {
+         if ( stylesheet.href && stylesheet.href.match("#{stylesheet_regex}") ) {
            // crude test for whether stylesheet was downloaded
            // fails on empty stylesheets
            result = (stylesheet.cssRules.length > 0);
