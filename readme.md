@@ -14,6 +14,12 @@ Run `bundle` in the root directory to install Rubygems dependencies.
 ## Running the tests
 
 Determine which server is going to be tested, e.g. `lr-pres-dev-c`, then
-invoke cucumber:
+invoke the tests:
 
-    TEST_HOST=lr-pres-dev-c.epimorphics.net cucumber
+    TEST_HOST=lr-pres-dev-c.epimorphics.net bin/test
+
+This runs:
+
+* a file download tests
+* legacy integration tests written in cucumber
+* revised integration tests for the updated UKHPI app, running under MiniTest

@@ -1,18 +1,21 @@
 #!/bin/bash
 
+function die_on_failure {
+  result=$?
+  if [ $result -ne 0 ]
+  then
+    echo $1
+    exit $result
+  fi
+}
 
-if [ -e test-output/* ]
-then
-  rm test-output/*
-fi
+rm -rf test-output/*
 mkdir -p test-output
 wget -O test-output/test-query "http://$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
-result=$?
-if [ $result -ne 0 ]
-then
-  echo test query failed
-  exit $result
-fi
-
+die_on_failure 'Test query failed'
 
 bundle exec cucumber
+die_on_failure 'Cucumber test suite failed'
+
+bundle exec rake test
+die_on_failure 'Integration test suite failed'
