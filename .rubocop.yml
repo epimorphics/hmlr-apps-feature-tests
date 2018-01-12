@@ -4,3 +4,11 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Style/StringLiterals:
   Enabled: true
+
+Metrics/ClassLength:
+  Exclude:
+    - specs/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - specs/**/*
