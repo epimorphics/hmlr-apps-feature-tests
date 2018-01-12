@@ -6,7 +6,6 @@ describe 'The home page' do
   include Capybara::Minitest::Assertions
 
   it 'should have the expected static content' do
-    puts self.class.superclass.inspect
     visit '/'
     page.must_have_title(/Welcome to House Price Data from HM Land Registry/)
     page.must_have_content(/HM Land Registry Open Data/)
