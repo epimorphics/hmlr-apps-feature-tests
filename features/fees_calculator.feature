@@ -13,7 +13,7 @@ Feature: retrieve fees calculator
     Then she should retrieve a web page
     And  it should have the title "Fees Calculator"
     And  it should have content "Fee calculator"
-    And  it should have an image matching "lr_logo.*\.png$"
+    And  it should have an image matching "HMLR_logo.*\.png$"
     And  it should have rules from stylesheet matching "normalize.css$"
     And  it should have rules from stylesheet matching "global.css$"
     And  it should have rules from stylesheet matching "fc_style.css$"
