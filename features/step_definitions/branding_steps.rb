@@ -1,6 +1,6 @@
 
 When(/^she retrieves an elda page$/) do
-  visit "http://#{HOST}/anything"
+  visit "#{PROTO}//#{HOST}/anything"
 end
 
 Then(/^it should have an HMG banner$/) do

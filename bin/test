@@ -1,5 +1,14 @@
 #!/bin/bash
 
+PROTO=${TEST_PROTO:-http:}
+
+if ! [[ "$PROTO" == *: ]]
+then
+  PROTO="$TEST_PROTO:"
+fi
+
+echo $PROTO
+
 function die_on_failure {
   result=$?
   if [ $result -ne 0 ]
@@ -11,7 +20,7 @@ function die_on_failure {
 
 rm -rf test-output/*
 mkdir -p test-output
-wget -O test-output/test-query "http://$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
+wget -O test-output/test-query "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
 die_on_failure 'Test query failed'
 
 bundle exec cucumber

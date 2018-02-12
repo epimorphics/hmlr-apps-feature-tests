@@ -6,9 +6,13 @@ require 'byebug'
 
 # Pass the test host in from the environment
 HOST = ENV['TEST_HOST'] || '10.10.10.10'
+PROTO = ENV['TEST_PROTO'] || 'http:'
+if ! PROTO.end_with? ":"
+  PROTO = PROTO + ":"
+end
 BASE = ''.freeze
 Capybara.run_server = false
-Capybara.app_host = "http://#{HOST}"
+Capybara.app_host = "#{PROTO}//#{HOST}"
 
 # Register a driver for visible Chrome using Selenium
 Capybara.register_driver :chrome do |app|

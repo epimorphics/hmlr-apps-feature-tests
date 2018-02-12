@@ -1,5 +1,6 @@
 When(/^she retrieves the page "([^"]+)"$/) do |url|
-  visit "#{BASE}#{url}"
+#  visit "#{BASE}#{url}"
+  visit "#{PROTO}//#{HOST}#{url}"
 end
 
 When(/^she enters "([^"]*)" in the "([^"]+)" field$/) do |text, field|
