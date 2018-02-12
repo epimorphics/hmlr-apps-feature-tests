@@ -10,8 +10,12 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Capybara configuration
 
 HOST = ENV['TEST_HOST'] || 'lr-pres-dev-c.epimorphics.net'
+PROTO = ENV['TEST_PROTO'] || 'http'
+if ! PROTO.end_with? ":"
+  PROTO = PROTO + ":"
+end
 Capybara.run_server = false
-Capybara.app_host = "http://#{HOST}"
+Capybara.app_host = "#{PROTO}//#{HOST}"
 
 $VERBOSE = nil
 
