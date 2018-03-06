@@ -7,13 +7,10 @@ then
   PROTO="$TEST_PROTO:"
 fi
 
-echo $PROTO
-
 function die_on_failure {
   result=$?
   if [ $result -ne 0 ]
   then
-    echo $1
     exit $result
   fi
 }
