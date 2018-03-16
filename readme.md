@@ -13,11 +13,8 @@ Run `bundle` in the root directory to install Rubygems dependencies.
 
 ## Running the tests
 
-<<<<<<< HEAD
 Determine which server is going to be tested, e.g. `lr-ppd-dev-pres`*, then
-=======
-Determine which server is going to be tested, e.g. `lr-ppd-dev-pres.epimorphics.net`, then
->>>>>>> refs/remotes/origin/master
+
 invoke the tests:
 
     TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
