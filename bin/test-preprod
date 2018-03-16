@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Run tests over ssh tunnel to an endpoint
+#
+# $TEST_PORT optional (defaults to 8000) port number of local end of SSH tunnel
+# $TUNNEL_ENDPOINT optional (defaults to lr-ppd-preprod-pres-1)
+# $SSH_CREDS optional (will use defaults from SSL config) set to "-i {SSH key}
+
+set -e
+
+function verify-etc-hosts {
+  cat /etc/hosts | grep "^127.0.0.1" \
+  | grep -E '^127.0.0.1[[:space:]]+lr-pres-tunnel.epimorphics.net' /etc/hosts \
+  > /dev/null || ( echo "\"127.0.0.1 lr-pres-tunnel.epimorphics.net\" must be set in /etc/hosts" ; exit 1 )   
+}
+
+function openSSHTunnel {
+
+  local tunnel_endpoint="$1"
+  local test_port="$2"
+  local test_user="$3"
+  local ssh_creds="$4"
+  
+  cmd="ssh "$ssh_creds" -fN -L ${test_port}:localhost:80 ${test_user}@$tunnel_endpoint"
+  eval "$cmd"
+  SSH_PID=$( pgrep -f "ssh.*-fN -L ${test_port}:localhost:80" )
+  echo "created ssh tunnel $SSH_PID"
+  echo
+}
+
+function closeSSHTunnel {
+  if [ -n "$SSH_PID" ]
+  then
+    echo "closing SSH tunnel $SSH_PID"
+    kill "$SSH_PID"
+    echo
+  fi
+}
+
+trap closeSSHTunnel EXIT
+
+TEST_PORT="${TEST_PORT:-8000}"
+TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
+TEST_USER=ubuntu
+TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
+HERE=`dirname $0`
+
+verify-etc-hosts
+
+openSSHTunnel "$TUNNEL_ENDPOINT" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
+
+"$HERE/test"
+
+closeSSHTunnel
+
