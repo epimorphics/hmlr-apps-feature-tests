@@ -13,7 +13,11 @@ Run `bundle` in the root directory to install Rubygems dependencies.
 
 ## Running the tests
 
+<<<<<<< HEAD
 Determine which server is going to be tested, e.g. `lr-ppd-dev-pres`*, then
+=======
+Determine which server is going to be tested, e.g. `lr-ppd-dev-pres.epimorphics.net`, then
+>>>>>>> refs/remotes/origin/master
 invoke the tests:
 
     TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
@@ -23,6 +27,7 @@ This runs:
 * a file download tests
 * legacy integration tests written in cucumber
 * revised integration tests for the updated UKHPI app, running under MiniTest
+
 
 ## Running the tests on the preproduction server
 
@@ -49,4 +54,12 @@ Point a browser at http://lr-pres-tunnel.epimorphics.net:${PORT}.
 lr-ppd-dev-pres-1.
 
 
+## Tests dependent on recent data
+
+By default, the tests will omit any tests dependent on there being recent data
+available to test against. These tests are tagged in the cucumber features with
+`@recent`. To **include** the recent tests in the test run, set the environment
+variable `RECENT` to any non-empty value:
+
+    RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
 

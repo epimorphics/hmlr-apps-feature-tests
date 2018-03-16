@@ -20,8 +20,15 @@ mkdir -p test-output
 wget -O test-output/test-query "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
 die_on_failure 'Test query failed'
 
-bundle exec cucumber
-die_on_failure 'Cucumber test suite failed'
+if [ "${RECENT}1" = '1' ]; then
+  echo 'Running cucumber tests without @recent'
+  bundle exec cucumber --tags 'not @recent'
+  die_on_failure 'Cucumber test suite failed'
+else
+  echo 'Running cucumber tests, including @recent'
+  bundle exec cucumber
+  die_on_failure 'Cucumber test suite failed'
+fi
 
 bundle exec rake test
 die_on_failure 'Integration test suite failed'
