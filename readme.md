@@ -45,11 +45,6 @@ The ssh process must be killed when finished.
 
 Point a browser at http://lr-pres-tunnel.epimorphics.net:${PORT}.
 
-----------------
-
-* This tests the dev server via a load balancer.  To test the server directly use
-lr-ppd-dev-pres-1.
-
 
 ## Tests dependent on recent data
 
@@ -59,4 +54,10 @@ available to test against. These tests are tagged in the cucumber features with
 variable `RECENT` to any non-empty value:
 
     RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+    
+
+----------------
+
+* This tests the dev server via a load balancer.  To test the server directly use
+lr-ppd-dev-pres-1.
 
