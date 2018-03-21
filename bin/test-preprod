@@ -39,10 +39,10 @@ function closeSSHTunnel {
 
 trap closeSSHTunnel EXIT
 
-TEST_PORT="${TEST_PORT:-8000}"
-TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
-TEST_USER=ubuntu
-TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
+export TEST_PORT="${TEST_PORT:-8000}"
+export TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
+export TEST_USER=ubuntu
+export TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
 HERE=`dirname $0`
 
 verify-etc-hosts
