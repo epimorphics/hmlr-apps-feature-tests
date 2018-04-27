@@ -4,4 +4,6 @@
 
 export TEST_HOST=landregistry.data.gov.uk
 
+export PATH=/opt/chefdk/emebedded/bin:$PATH
+
 bin/test
