@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# run tests against the production service in Jenkins
+
+export TEST_HOST=landregistry.data.gov.uk
+
+bin/test
