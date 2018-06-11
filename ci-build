@@ -2,6 +2,8 @@
 
 # run tests against the production service in Jenkins
 
+bundle install
+
 export TEST_HOST=landregistry.data.gov.uk
 export IN_CI=true
 
