@@ -27,7 +27,7 @@ describe 'The UKHPI application' do
       .must_have_content(/£([[[:digit:]],])+/)
     page
       .find('.c-headline-figure__monthly-change')
-      .must_have_content(/(fallen|risen) by ([[[:digit:]]\.]+)%/)
+      .must_have_content(/(remained the same)|((fallen|risen) by ([[[:digit:]]\.]+)%)/)
   end
 
   it 'should be able to reach the application from the landing page' do
