@@ -15,15 +15,14 @@ QUERY_URL="http://$TEST_HOST/landregistry/query?query=PREFIX+sd%3A+%3Chttp%3A%2F
 # start with filling the queue for 10.10.99.99 with longish running queries
 for i in $(seq 1 $QUEUE_LIMIT)
 do
-#  wget --header "X-Forwarded-For: 10.10.99.99" "$QUERY_URL" &
-  curl -s -o /dev/null --header "X-Forwarded-For: 10.10.99.99" "$QUERY_URL"
+  curl -s -o /dev/null --header "X-Forwarded-For: 10.10.99.99" "$QUERY_URL" &
 done
 
 # now launch the same requests for a different source IP address and check they are not blocked
 for i in $(seq 1 $QUEUE_LIMIT)
 do
  ( status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Forwarded-For: 10.10.99.88" "$QUERY_URL" ) ; if [ "$status" != "200" ] ; then  echo "test failed: request blocked" ; exit 1 ; fi ) &
- group2[${i}]=$!
+ group1[${i}]=$!
 done
 
 # wait a bit to make sure all queries sent
