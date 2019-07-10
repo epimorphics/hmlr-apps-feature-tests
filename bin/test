@@ -41,8 +41,17 @@ die_on_failure 'Cucumber test suite failed'
 bundle exec rake test
 die_on_failure 'Integration test suite failed'
 
-echo "running mod_qos test"
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-"$SCRIPTDIR/test-mod-qos"
-die_on_failure 'mod_qos test failed'
+if [ "$TEST_LB" != "true" ] 
+then
+  echo "running mod_qos test"
+
+  echo "NOTE: this test will not work through a load balancer as it relies on being able to set X-FORWARDED-FOR"
+  echo
+  echo "To disable set environment variable TEST_LB=true"
+  echo
+
+  SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+  "$SCRIPTDIR/test-mod-qos"
+  die_on_failure 'mod_qos test failed'
+fi
 
