@@ -4,5 +4,6 @@
 
 export TEST_HOST=landregistry.data.gov.uk
 export IN_CI=true
+export TEST_LB=true
 
 bin/test
