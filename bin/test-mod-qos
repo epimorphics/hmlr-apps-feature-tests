@@ -9,7 +9,7 @@
 set -e
 
 QUEUE_LIMIT=6
-TEST_PROTO=${TEST_PROT:-https}
+TEST_PROTO=${TEST_PROTO:-https}
 
 QUERY_URL="$TEST_PROTO://$TEST_HOST/landregistry/query?query=PREFIX+sd%3A+%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fsparql-service-description%23%3E%0APREFIX+xsd%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0APREFIX+lrppi%3A+%3Chttp%3A%2F%2Flandregistry.data.gov.uk%2Fdef%2Fppi%2F%3E%0APREFIX+lrcommon%3A+%3Chttp%3A%2F%2Flandregistry.data.gov.uk%2Fdef%2Fcommon%2F%3E%0A%0D%0A%09%09SELECT+%2A%0D%0A%09%09WHERE+%7B%0D%0A%09%09%09SERVICE+%3Chttp%3A%2F%2Flandregistry.data.gov.uk%2Flandregistry%2Fquery%3E+%7B%0D%0A%09%09%09%09VALUES+%3Ftown+%7B%22PLYMOUTH%22%7D%0D%0A%09%09%09%09%09%09%0D%0A%09%09%09%09%3Faddr+lrcommon%3Atown+%3Ftown.%0D%0A%0D%0A%09%09%09%09%3Ftransx+lrppi%3ApropertyAddress+%3Faddr+%3B%0D%0A%09%09%09%09lrppi%3ApricePaid+%3Famount+%3B%0D%0A%09%09%09%09lrppi%3AtransactionDate+%3Fdate+%3B%0D%0A%09%09%09%09lrppi%3ApropertyType+%3FpropertyType.%0D%0A%0D%0A%09%09%09%09OPTIONAL+%7B%3Faddr+lrcommon%3Acounty+%3Fcounty%7D%0D%0A%09%09%09%09OPTIONAL+%7B%3Faddr+lrcommon%3Apaon+%3Fpaon%7D%0D%0A%09%09%09%09OPTIONAL+%7B%3Faddr+lrcommon%3Asaon+%3Fsaon%7D%0D%0A%09%09%09%09OPTIONAL+%7B%3Faddr+lrcommon%3Astreet+%3Fstreet%7D%0D%0A%09%09%09%09OPTIONAL+%7B%3Faddr+lrcommon%3Apostcode+%3Fpostcode%7D%0D%0A%09%09%09%09%0D%0A%09%09%09%7D%0D%0A%09%09%09FILTER+%28%0D%0A%09%09%09%09%3Fdate+%3E+%222018-12-21%22%5E%5Exsd%3Adate+%26%26%0D%0A%09%09%09%09%3Fdate+%3C+%222019-06-21%22%5E%5Exsd%3Adate%0D%0A%09%09%09%29%0D%0A%09%09%09%0D%0A%09%09%7D%0D%0A%09"
 
