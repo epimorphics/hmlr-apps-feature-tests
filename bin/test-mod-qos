@@ -35,7 +35,7 @@ sleep 2
 
 for i in $(seq 1 $QUEUE_LIMIT)
 do
- ( status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Forwarded-For: 10.10.99.88" "${TEST_PROTO}://$TEST_HOST/landregistry/query" --data-urlencode "query=SELECT * {?s ?p ?o } LIMIT 10000" ) ; if [ "$status" != "403" ] ; then  echo "test failed: request not blocked status = $status" ; exit 1 ; fi ) &
+ ( status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Forwarded-For: 10.10.99.88" "${TEST_PROTO}://$TEST_HOST/landregistry/query" --data-urlencode "query=SELECT * {?s ?p ?o } LIMIT 10000" ) ; if [ "$status" != "429" ] ; then  echo "test failed: request not blocked status = $status" ; exit 1 ; fi ) &
  group2[${i}]=$!
 done
 
