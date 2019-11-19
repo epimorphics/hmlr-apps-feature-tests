@@ -4,6 +4,7 @@ require 'minitest/autorun'
 require 'minitest/reporters'
 require 'selenium/webdriver'
 require 'hmlr_minitest_helpers'
+require 'webdrivers/geckodriver'
 
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
@@ -24,20 +25,26 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
+# Register a driver for visible Firefox using Selenium
+Capybara.register_driver :firefox do |app|
+  Capybara::Selenium::Driver.new(app, browser: :firefox)
+end
+
 # Register a driver for headless Chrome using Selenium
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless disable-gpu] },
+Capybara.register_driver :headless_firefox do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(
+    chromeOptions: { args: %w[headless] },
     loggingPrefs: { browser: 'ALL' }
   )
 
   Capybara::Selenium::Driver.new(app,
-                                 browser: :chrome,
+                                 browser: :firefox,
                                  desired_capabilities: capabilities)
 end
 
 # To see the Chrome window while tests are running, set this var to true
 see_visible_window_while_test_run = ENV['TEST_BROWSER_VISIBLE']
-driver = see_visible_window_while_test_run ? :chrome : :headless_chrome
+# driver = see_visible_window_while_test_run ? :chrome : :headless_chrome
+driver = see_visible_window_while_test_run ? :firefox : :headless_firefox
 Capybara.default_driver    = driver
 Capybara.javascript_driver = driver

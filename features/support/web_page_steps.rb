@@ -81,7 +81,7 @@ end
 
 Then(/it should have rules from stylesheet matching "(.*)"/) do |stylesheet_regex|
   script = %{
-    $TEST_RESULT = (function() {
+    (function() {
       var result = false;
       for ( i=0; i < document.styleSheets.length; i++ ) {
          stylesheet = document.styleSheets[i];
@@ -95,14 +95,13 @@ Then(/it should have rules from stylesheet matching "(.*)"/) do |stylesheet_rege
       return result;
     })();
   }
-  page.execute_script(script)
-  result = page.evaluate_script('$TEST_RESULT')
+  result = page.evaluate_script(script)
   expect(result).to eq(true)
 end
 
 Then(/it should have an image matching "(.*)"/) do |img_url_regex|
   script = %{
-    $TEST_RESULT = (function() {
+    (function() {
       result = false;
       for ( i=0 ; i < document.images.length ; i++) {
          image = document.images[i]
@@ -114,8 +113,7 @@ Then(/it should have an image matching "(.*)"/) do |img_url_regex|
        return result;
     })();
   }
-  page.execute_script(script)
-  result = page.evaluate_script('$TEST_RESULT')
+  result = page.evaluate_script(script)
   expect(result).to eq(true)
 end
 

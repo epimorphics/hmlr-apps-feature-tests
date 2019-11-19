@@ -4,7 +4,7 @@
 module HmlrMinitestHelpers
   # rubocop:disable Style/MutableConstant
   CSS_CONTENTS_SCRIPT = <<SCRIPT
-    $hmlrTestResult = (function() {
+    (function() {
       var result = false;
       for (var i = 0; i < document.styleSheets.length; i++) {
         stylesheet = document.styleSheets[i];
@@ -20,8 +20,7 @@ SCRIPT
   # @return True if the stylesheets of the page include a stylesheet with href
   # matching the pattern and at least one line
   def includes_css_rules_from?(page, pattern)
-    page.execute_script(format(CSS_CONTENTS_SCRIPT, pattern: pattern))
-    page.evaluate_script('$hmlrTestResult')
+    page.evaluate_script(format(CSS_CONTENTS_SCRIPT, pattern: pattern))
   end
 end
 
