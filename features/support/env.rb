@@ -39,14 +39,12 @@ end
 
 # Register a driver for headless firefox using Selenium
 Capybara.register_driver :headless_firefox do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(
-    firefoxOptions: { args: %w[headless] },
-    loggingPrefs: { browser: 'ALL' }
-  )
+  options = Selenium::WebDriver::Firefox::Options.new
+  options.headless!
 
   Capybara::Selenium::Driver.new(app,
                                  browser: :firefox,
-                                 desired_capabilities: capabilities)
+                                 options: options)
 end
 
 # To see the Browser window while tests are running, set this var to true

@@ -32,18 +32,17 @@ end
 
 # Register a driver for headless Chrome using Selenium
 Capybara.register_driver :headless_firefox do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(
-    chromeOptions: { args: %w[headless] },
-    loggingPrefs: { browser: 'ALL' }
-  )
+  options = Selenium::WebDriver::Firefox::Options.new
+  options.headless!
 
   Capybara::Selenium::Driver.new(app,
                                  browser: :firefox,
-                                 desired_capabilities: capabilities)
+                                 options: options)
 end
 
 # To see the Chrome window while tests are running, set this var to true
 see_visible_window_while_test_run = ENV['TEST_BROWSER_VISIBLE']
+
 # driver = see_visible_window_while_test_run ? :chrome : :headless_chrome
 driver = see_visible_window_while_test_run ? :firefox : :headless_firefox
 Capybara.default_driver    = driver
