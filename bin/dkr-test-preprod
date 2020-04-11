@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run tests over ssh tunnel to an endpoint
+# Run tests over ssh tunnel to preprod
 #
 # $TEST_PORT optional (defaults to 8000) port number of local end of SSH tunnel
 # $TUNNEL_ENDPOINT optional (defaults to lr-ppd-preprod-pres-1)
@@ -8,9 +8,8 @@
 
 set -e
 
-
-HERE=`dirname $0`
-source "$HERE/lib"
+SCRIPT_DIR=`dirname $0`
+source "$SCRIPT_DIR/lib"
 
 trap closeSSHTunnel EXIT
 
@@ -19,9 +18,12 @@ export TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
 export TEST_USER=ubuntu
 export TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
 
-verify-etc-hosts
+# this works on a linux or a mac: windows not yet supported
+HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
 
-openSSHTunnel "$TUNNEL_ENDPOINT" localhost "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
+openSSHTunnel "$TUNNEL_ENDPOINT" "$HOST_IP" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
 
-"$HERE/test"
+"$SCRIPT_DIR/dkr-test"
+
+closeSSHTunnel
 

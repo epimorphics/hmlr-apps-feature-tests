@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -n "$TEST_URL" ]
+then
+  export TEST_PROTO=$( echo "$TEST_URL" | sed -e 's/\([^:]*:\).*/\1/' )
+  export TEST_HOST=$( echo "$TEST_URL" | sed -e 's/[^:]*:\/\/\(.*\)/\1/' )
+fi
+
+
 PROTO=${TEST_PROTO:-http:}
 
 if ! [[ "$PROTO" == *: ]]
@@ -23,19 +30,19 @@ fi
 
 rm -rf test-output/*
 mkdir -p test-output
-wget -O test-output/test-query "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
+wget -O /dev/null "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
 die_on_failure 'Test query failed'
 
 bundle exec rake test
 die_on_failure 'Integration test suite failed'
 
-if [ "$TEST_LB" != "true" ]
+if [ "$TEST_LB" != "1" ]
 then
   echo "running mod_qos test"
 
   echo "NOTE: this test will not work through a load balancer as it relies on being able to set X-FORWARDED-FOR"
   echo
-  echo "To disable set environment variable TEST_LB=true"
+  echo "To disable set environment variable TEST_LB=1"
   echo
 
   SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
