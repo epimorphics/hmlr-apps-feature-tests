@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# script that runs on a host system to run tests in a container.
+#
+# To enable display of the test browser when the tests are running, the script
+# shares the hosts X display port into the container.
+#
+
+set -e
+
+SCRIPT_DIR=$( dirname "$0" )
+source "$SCRIPT_DIR/dkr-config"
+
+# build the docker command to run the tests in the container
+
+TEST_CMD="${TEST_CMD:-bash bin/test} "
+
+# this works on a linux or a mac: subsititue something based on ipconfig for windows
+ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+
+
+docker_cmd=" \
+  docker run -it --rm \
+  --privileged \
+  --workdir=\"/home/tester\" \
+  --volume=\"$PWD/features:/home/tester/features:ro\" \
+  --volume=\"$PWD/specs:/home/tester/specs:ro\" \
+  --volume=\"$PWD/bin:/home/tester/bin:ro\" \
+  --volume=\"$PWD/lib:/home/tester/lib:ro\" \
+  --volume=/private/tmp/.X11-unix:/tmp.X11-unix \
+  -e IN_CONTAINER=1 \
+  -e DISPLAY=\"$ip:0\" \
+  -e MOZ_HEADLESS=\"$MOZ_HEADLESS\" \
+  -e TEST_HOST=\"$TEST_HOST\" \
+  \"${CONTAINER_NAME}:${CONTAINER_VERSION}\" -c \"$TEST_CMD \ 
+"
+
+# now append the arguments passed to this script
+  
+for p in "$@"
+do
+  docker_cmd="$docker_cmd \\\"$p\\\""
+done
+
+# and finally the closing quote
+
+docker_cmd="$docker_cmd\""
+
+# now show and execute it
+
+echo "$docker_cmd"
+eval "$docker_cmd"
+
+echo "test run complete"
