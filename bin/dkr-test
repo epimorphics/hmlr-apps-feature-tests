@@ -32,6 +32,7 @@ docker_cmd=" \
   -e DISPLAY=\"$ip:0\" \
   -e MOZ_HEADLESS=\"$MOZ_HEADLESS\" \
   -e TEST_HOST=\"$TEST_HOST\" \
+  -e TEST_PROTO=\"$TEST_PROTO\" \
   \"${CONTAINER_NAME}:${CONTAINER_VERSION}\" -c \"$TEST_CMD \ 
 "
 
