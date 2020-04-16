@@ -64,7 +64,8 @@ describe 'The UKHPI application' do
     page
       .find('.el-input input')
       .send_keys('scotland')
-
+#   insert a short delay - without it the tests fail intermittently when run in a container
+    sleep 1
     page
       .click_button('Confirm')
 
