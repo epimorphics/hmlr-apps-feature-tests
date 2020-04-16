@@ -5,13 +5,21 @@ Previously the tests were maintained as part of the system operations. In order
 to allow other developers to work on maintaining the tests without being
 committers to the Ops project, these tests now standalone.
 
-## Setup
+# Running the tests
+
+Testcan be run natively or from within a Docker container.
+
+The container contains all the software components required to run the tests, but not 
+the tests themselves. The container mounts the tests and scripts from the current 
+directory. Tests and scripts can therefore be modified without rebuilding the container.
+
+## Native Setup
 
 Standard Ruby version (as of Aug 2017) is Ruby 2.2.7.
 
 Run `bundle` in the root directory to install Rubygems dependencies.
 
-## Running the tests
+## Running the tests natively
 
 Determine which server is going to be tested, e.g. `lr-ppd-dev-pres`*, then
 
@@ -25,52 +33,37 @@ This runs:
 * legacy integration tests written in cucumber
 * revised integration tests for the updated UKHPI app, running under MiniTest
 
-## Running the tests in a Docker container
-
-The tests can be run using a Docker container. The container contains all the
-software components required to run the tests, but not the tests themselves.
-When the container is run from the root directory of this repository, it mounts
-the tests and scripts from the current directory into the container file
-space.  Tests and scripts can therefore modified without rebuilding the container.
-
-### Installing the container on the local image
+# Docker Setup
 
 - Docker must be installed
-- download the container
-     - `bin/dkr-login`
-        - authenticates your Docker server to the container repository
-        - assumes you have an AWS profile for the Landregistry account called 'lr'
-           - define the environment variable AWS_PROFILE to override the name
-     - `dkr-pull-test-container`
-        - pulls a copy of the test container to your machine
+- Ensure the user is a member of the docker group
+- (Recommended) Install ACR Credentials Helper to interact with the AWS Container
+  Registry
+- Define env var LR_URL (note this is different to the native tests).
 
-### Running the tests using a container
+## Running the tests
 
-- cd to the root directory of this project
-- `bin/dkr-test`
-     - takes the same arguments and environment variable as `bin/test`; see above
+The operation of the docker image is controlled by a makefile.
+This makefile contains instructions to download to previously publish image, build and 
+publish a new image, and to run the test.
 
-To open a bash shell in the container run
+* make image: builds an image in the local registry.
+* make install: pulls an image from the ACR
+* make headless: runs the image (the tests) in headless mode
+* make gui: runs the image (the tests) in non-headless mode
+* make release: pushes a new image to ACR
 
-```
-    TEST_CMD=bash bin/dkr-test
-```
+# Running the tests on the preproduction server
 
-### Building a test container from scratch
+The preprod server is not visible on the open internet.
 
-The docker file that defines the container is `docker/Dockerfile`
+As an alternative to running over ssh tunnel it may be accessed from Court Lodge via the
+hostname lr-staging.epimorphics.net.
 
-`bin/dkr-build-test-container` will build a local container image.
+## Running via ssh tunnel to preproduction
 
-`bin/dkr-login ; bin/push-test-container` will push the local test container image
-to the Docker registry.  The registry will not allow redefining an existing tag
-so the container version defined in `bin/dkr-config` must be updated before the
-the new container image is built and pushed.
-
-## Running the tests on the preproduction server
-
-The preprod server is not visible on the open internet.  To run tests on it an
-ssh tunnel must be set up and tests directed to the local end of the tunnel.
+To run tests on it an ssh tunnel must be set up and tests directed to the local end of 
+the tunnel.
 
 The script bin/test-preprod sets up a tunnel, runs the tests and then tears down the tunnel.
 See the script for various parameters that can be set as environment variables.
