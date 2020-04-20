@@ -6,5 +6,4 @@ SCRIPT_DIR=$( dirname "$0" )
 source "$SCRIPT_DIR/dkr-config"
 
 echo docker image rm "${CONTAINER_NAME}:${CONTAINER_VERSION}" || true 
-docker build -f docker/Dockerfile  \
-       -t "${CONTAINER_NAME}:${CONTAINER_VERSION}" .
+docker build -t "${CONTAINER_NAME}:${CONTAINER_VERSION}" .
