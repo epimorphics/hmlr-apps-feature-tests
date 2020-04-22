@@ -8,7 +8,6 @@
 
 set -e
 
-
 SCRIPT_DIR=`dirname $0`
 source "$SCRIPT_DIR/lib"
 
@@ -18,13 +17,12 @@ export TEST_PORT="${TEST_PORT:-8000}"
 export TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
 export TEST_USER=ubuntu
 export TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
-HERE=`dirname $0`
 
 verify-etc-hosts
 
 openSSHTunnel "$TUNNEL_ENDPOINT" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
 
-"$SCRIPT_DIR/test"
+"$SCRIPT_DIR/dkr-test"
 
 closeSSHTunnel
 

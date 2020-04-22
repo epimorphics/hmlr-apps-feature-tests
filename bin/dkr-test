@@ -2,36 +2,98 @@
 
 # script that runs on a host system to run tests in a container.
 #
-# To enable display of the test browser when the tests are running, the script
-# shares the hosts X display port into the container.
-#
 
 set -e
+
+function cleanup() {
+  if [[ $HOST_ON_OFF = 1 ]]
+  then 
+    xhost -$HOST_IP
+  fi
+}
+
+trap cleanup EXIT
 
 SCRIPT_DIR=$( dirname "$0" )
 source "$SCRIPT_DIR/dkr-config"
 
+# usually testing a specific server so use http by default
+TEST_PROTO=${TEST_PROTO:-http}
+if ! [[ "$PROTO" == *: ]]
+then
+  PROTO="$TEST_PROTO:"
+fi
+
+# this works on a linux or a mac: windows not yet supported
+HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+  
 # build the docker command to run the tests in the container
 
 TEST_CMD="${TEST_CMD:-bash bin/test} "
 
-# this works on a linux or a mac: subsititue something based on ipconfig for windows
-ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+# Sometimes we want to make the test browser window visible
+# which essential means giving the container access to an X windows server.
+# I have not yet found a satisfactory way of doing this.
+
+# The current approach depends on on whether the DISPLAY environment variable
+# identifies a socket or a domain.  If the value of the DISPLAY variable 
+# begins with a "/" or a ":", i.e. it identifies a socket, the 
+# display variable passed to the container points to the matching display 
+# on the IP address of the container host.  Otherwise the DISPLAY variable 
+# is passed to the container unmodified.
+#
+# To make this work, the container is run using the host network and xhost is
+# run to enable and then disable access to the X server from the host's IP address
+# before and after the container run.  
+#
+# This is unsatisfactory if the user want xhost enabled for the host's IP address anyway.
+# There must be a better way.
+
+function computeDisplayArg() {
+
+  if [ -n "$TEST_BROWSER_VISIBLE" ]
+  then
+    if [[ $DISPLAY = [/:]* ]]
+    then
+    
+      OIFS=$IFS
+      IFS=':' read -ra parts <<< "$DISPLAY"
+      d=${parts[1]}
+      DKR_DISPLAY="$HOST_IP:$d"
+      IFS=$OIFS
+      XHOST_ON_OFF=1
+    else
+      DKR_DISPLAY=$DISPLAY
+      XHOST_ON_OFF=0
+    fi
+    DISPLAY_ARG="-e DISPLAY=$DKR_DISPLAY"
+  else
+    DISPLAY_ARG=""
+  fi
+  
+ }
+
+computeDisplayArg
 
 docker_cmd=" \
   docker run -it --rm \
-  --privileged \
   --workdir=\"$APP\" \
   --volume=\"$PWD/features:$APP/features:ro\" \
   --volume=\"$PWD/specs:$APP/specs:ro\" \
   --volume=\"$PWD/bin:/$APP/bin:ro\" \
   --volume=\"$PWD/lib:$APP/lib:ro\" \
   --volume=/private/tmp/.X11-unix:/tmp.X11-unix \
+  --add-host "lr-pres-tunnel.epimorphics.net:$HOST_IP" \
+  $DISPLAY_ARG \
   -e IN_CONTAINER=1 \
-  -e DISPLAY=\"$ip:0\" \
-  -e MOZ_HEADLESS=\"$MOZ_HEADLESS\" \
+  -e HOST_IP=\"$HOST_IP\" \
+  -e TEST_BROWSER_VISIBLE=\"$TEST_BROWSER_VISIBLE\" \
   -e TEST_HOST=\"$TEST_HOST\" \
   -e TEST_PROTO=\"$TEST_PROTO\" \
+  -e TEST_LB=\"$TEST_LB\" \
+  -e IN_CI=\"$IN_CI\" \
+  -e RECENT=\"$RECENT\" \
+  --network host \
   \"${CONTAINER_NAME}:${CONTAINER_VERSION}\" -c \"$TEST_CMD "
 
 # now append the arguments passed to this script
@@ -48,6 +110,18 @@ docker_cmd="$docker_cmd\""
 # now show and execute it
 
 echo "$docker_cmd"
+
+if [[ XHOST_ON_OFF = 1 ]]
+then
+  xhost +$HOST_IP
+fi
+
 eval "$docker_cmd"
+
+if [[ XHOST_ON_OFF = 1 ]]
+then 
+  xhost -$HOST_IP
+fi
+
 
 echo "test run complete"
