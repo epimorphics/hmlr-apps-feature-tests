@@ -26,5 +26,3 @@ openSSHTunnel "$TUNNEL_ENDPOINT" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
 
 "$SCRIPT_DIR/test"
 
-closeSSHTunnel
-

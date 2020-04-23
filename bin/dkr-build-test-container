@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -e
-
-SCRIPT_DIR=$( dirname "$0" )
-source "$SCRIPT_DIR/dkr-config"
-
-echo docker image rm "${CONTAINER_NAME}:${CONTAINER_VERSION}" || true 
-docker build -t "${CONTAINER_NAME}:${CONTAINER_VERSION}" .

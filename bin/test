@@ -22,7 +22,7 @@ fi
 
 rm -rf test-output/*
 mkdir -p test-output
-wget -O test-output/test-query "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
+wget "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
 die_on_failure 'Test query failed'
 
 tags=""
