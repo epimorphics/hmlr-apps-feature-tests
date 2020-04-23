@@ -18,8 +18,6 @@ export TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
 export TEST_USER=ubuntu
 export TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
 
-verify-etc-hosts
-
 openSSHTunnel "$TUNNEL_ENDPOINT" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
 
 "$SCRIPT_DIR/dkr-test"

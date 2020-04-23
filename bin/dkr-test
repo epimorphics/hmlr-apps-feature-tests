@@ -77,6 +77,8 @@ computeDisplayArg
 
 docker_cmd=" \
   docker run -it --rm \
+  --hostname=lr-integration-test \
+  --name=lr-integration-test \
   --workdir=\"$APP\" \
   --volume=\"$PWD/features:$APP/features:ro\" \
   --volume=\"$PWD/specs:$APP/specs:ro\" \
@@ -94,7 +96,7 @@ docker_cmd=" \
   -e IN_CI=\"$IN_CI\" \
   -e RECENT=\"$RECENT\" \
   --network host \
-  \"${CONTAINER_NAME}:${CONTAINER_VERSION}\" -c \"$TEST_CMD "
+  \"${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}\" -c \"$TEST_CMD "
 
 # now append the arguments passed to this script
   
