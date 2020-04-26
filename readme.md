@@ -29,6 +29,7 @@ This runs:
 
 The tests can be run using a Docker container. The container contains all the
 software components required to run the tests, but not the tests themselves.
+
 When the container is run from the root directory of this repository, it mounts
 the tests and scripts from the current directory into the container file
 space.  Tests and scripts can therefore modified without rebuilding the container.
@@ -36,21 +37,30 @@ space.  Tests and scripts can therefore modified without rebuilding the containe
 ### Installing the container on the local image
 
 - Docker must be installed
-- download the container
-     - `bin/dkr-login`
-        - authenticates your Docker server to the container repository
-        - assumes you have an AWS profile for the Landregistry account called 'lr'
-           - define the environment variable AWS_PROFILE to override the name
-     - `dkr-pull-test-container`
-        - pulls a copy of the test container to your machine
+- the aws credentials helper should be installed and configured - 
+  see https://github.com/awslabs/amazon-ecr-credential-helper/blob/master/README.md
+- to download the container `make install-test-container`
 
 ### Running the tests using a container
+
+This can be done using make:
+
+- `make test-dev` will test the dev server
+- `make test-preprod` will test the preprod server
+- `make test-production` will test the production service
+
+Make can also be used to test an individual server:
+
+- `make test-server TEST_HOST=...` will test that server directly
+   - e.g. `make test-server TEST_HOST=lr-ppd-production-pres-1.epimorphics.net`
+
+The test scripts can be run directly, which may give a bit more control over the test run:
 
 - cd to the root directory of this project
 - `bin/dkr-test`
      - takes the same arguments and environment variable as `bin/test`; see above
 
-To open a bash shell in the container run
+To open a bash shell in an instance of the test container, run
 
 ```
     TEST_CMD=bash bin/dkr-test
@@ -58,12 +68,11 @@ To open a bash shell in the container run
 
 ### Building a test container from scratch
 
-The docker file that defines the container is `docker/Dockerfile`
+`test-container-image` will build the test container image locally.
 
-`bin/dkr-build-test-container` will build a local container image.
+`release-test-container` will push a locally built container image to the LR EKS container registry.
 
-`bin/dkr-login ; bin/push-test-container` will push the local test container image
-to the Docker registry.  The registry will not allow redefining an existing tag
+The registry will not allow redefining an existing tag
 so the container version defined in `bin/dkr-config` must be updated before the
 the new container image is built and pushed.
 
@@ -75,14 +84,7 @@ ssh tunnel must be set up and tests directed to the local end of the tunnel.
 The script bin/test-preprod sets up a tunnel, runs the tests and then tears down the tunnel.
 See the script for various parameters that can be set as environment variables.
 
-An entry /etc/hosts to map lr-pres-tunnel.epimorphics.net to localhost.
-
-To set up an ssh tunnel manually
-
-ssh -L ${PORT}:localhost:80 -fN -i ~/.ssh/lr.pem ubuntu@lr-ppd-preprod-pres-1.epimorphics.net
-
-This will start an ssh process to implement the tunnel in the background.  
-The ssh process must be killed when finished.
+The equivalent script to run the tests using a container is `bin/dkr-test-preprod`
 
 Point a browser at http://lr-pres-tunnel.epimorphics.net:${PORT}.
 
