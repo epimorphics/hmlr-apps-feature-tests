@@ -16,14 +16,43 @@ Run `bundle` in the root directory to install Rubygems dependencies.
 Determine which server is going to be tested, e.g. `lr-ppd-dev-pres`*, then
 
 invoke the tests:
-
+```
     TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+```
+or
+```
+   TEST_URL=http://lr-ppd-dev-pres.epimorphics.net bin/test
+```
 
 This runs:
 
 * a file download tests
 * legacy integration tests written in cucumber
 * revised integration tests for the updated UKHPI app, running under MiniTest
+
+### Tests dependent on recent data
+
+By default, the tests will omit any tests dependent on there being recent data
+available to test against. These tests are tagged in the cucumber features with
+`@recent`. To **include** the recent tests in the test run, set the environment
+variable `RECENT` to any non-empty value:
+
+    RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+    
+### Tests that don't work a CI environment
+
+Most tests works in a CI environment, but standard reports tests do not.  To exclude
+these tests:
+
+    IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+
+### Testing via a Load Balancer
+
+Some tests, such as the quality of service tests, do not work via a load balancer.
+To disable these tests set the `TEST_LB` environment variable to true:
+```
+   TEST_LB=true TEST_URL=https://landregistry.data.gov.uk bin/test
+```
 
 ## Running the tests in a Docker container
 
@@ -52,7 +81,7 @@ This can be done using make:
 Make can also be used to test an individual server:
 
 - `make test-server TEST_HOST=...` will test that server directly
-   - e.g. `make test-server TEST_HOST=lr-ppd-production-pres-1.epimorphics.net`
+   - e.g. `make test-server TEST_URL=http://lr-ppd-production-pres-1.epimorphics.net`
 
 The test scripts can be run directly, which may give a bit more control over the test run:
 
@@ -63,7 +92,7 @@ The test scripts can be run directly, which may give a bit more control over the
 To open a bash shell in an instance of the test container, run
 
 ```
-    TEST_CMD=bash bin/dkr-test
+    TEST_CMD="bash -" bin/dkr-test
 ```
 
 ### Building a test container from scratch
@@ -89,22 +118,7 @@ The equivalent script to run the tests using a container is `bin/dkr-test-prepro
 Point a browser at http://lr-pres-tunnel.epimorphics.net:${PORT}.
 
 
-## Tests dependent on recent data
 
-By default, the tests will omit any tests dependent on there being recent data
-available to test against. These tests are tagged in the cucumber features with
-`@recent`. To **include** the recent tests in the test run, set the environment
-variable `RECENT` to any non-empty value:
-
-    RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
-    
-## Tests that don't work a CI environment
-
-Most tests works in a CI environment, but standard reports tests do not.  To exclude
-these tests:
-
-    IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
-    
 
 ----------------
 

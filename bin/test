@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -n "$TEST_URL" ]
+then
+  TEST_PROTO=$( echo "$TEST_URL" | sed -e 's/\([^:]*:\).*/\1/' )
+  TEST_HOST=$( echo "$TEST_URL" | sed -e 's/[^:]*:\/\/\(.*\)/\1/' )
+fi
+
+
 PROTO=${TEST_PROTO:-http:}
 
 if ! [[ "$PROTO" == *: ]]

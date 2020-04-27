@@ -90,6 +90,7 @@ docker_cmd=" \
   -e IN_CONTAINER=1 \
   -e HOST_IP=\"$HOST_IP\" \
   -e TEST_BROWSER_VISIBLE=\"$TEST_BROWSER_VISIBLE\" \
+  -e TEST_URL=\"$TEST_URL\" \
   -e TEST_HOST=\"$TEST_HOST\" \
   -e TEST_PROTO=\"$TEST_PROTO\" \
   -e TEST_LB=\"$TEST_LB\" \
@@ -111,7 +112,10 @@ docker_cmd="$docker_cmd\""
 
 # now show and execute it
 
-echo "$docker_cmd"
+if [[ DEBUG = 1 ]]
+then
+  echo "$docker_cmd"
+fi
 
 if [[ XHOST_ON_OFF = 1 ]]
 then
