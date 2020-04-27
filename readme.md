@@ -80,7 +80,7 @@ This can be done using make:
 
 Make can also be used to test an individual server:
 
-- `make test-server TEST_HOST=...` will test that server directly
+- `make test-server TEST_URL=...` will test that URL directly
    - e.g. `make test-server TEST_URL=http://lr-ppd-production-pres-1.epimorphics.net`
 
 The test scripts can be run directly, which may give a bit more control over the test run:
