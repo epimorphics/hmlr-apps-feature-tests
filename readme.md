@@ -97,9 +97,9 @@ To open a bash shell in an instance of the test container, run
 
 ### Building a test container from scratch
 
-`test-container-image` will build the test container image locally.
+`make test-container-image` will build the test container image locally.
 
-`release-test-container` will push a locally built container image to the LR EKS container registry.
+`make release-test-container` will push a locally built container image to the LR container registry.
 
 The registry will not allow redefining an existing tag
 so the container version defined in `bin/dkr-config` must be updated before the
@@ -116,9 +116,6 @@ See the script for various parameters that can be set as environment variables.
 The equivalent script to run the tests using a container is `bin/dkr-test-preprod`
 
 Point a browser at http://lr-pres-tunnel.epimorphics.net:${PORT}.
-
-
-
 
 ----------------
 
