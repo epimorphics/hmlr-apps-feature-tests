@@ -29,6 +29,13 @@ When(/^she clicks on the first "(.+)" button$/) do |button_text|
   buttons[0].click
 end
 
+When(/^after upto ([0-9]+) seconds she clicks on the first "(.+)" button$/) do |wait_time, button_text|
+  using_wait_time Integer(wait_time) do
+      buttons = all(:xpath, "//a[normalize-space(.) = '#{button_text}']")
+      buttons[0].click
+  end
+end
+
 When(/^she clicks on the "(.+)" checkbox$/) do |box|
   uncheck(box)
 end
@@ -58,6 +65,12 @@ end
 
 Then(/^it should have content "(.*)"$/) do |content|
   expect(page).to have_content(content)
+end
+
+When(/^after upto ([0-9]+) seconds it should have content "([^"]*)"/) do |wait_time, content|
+  using_wait_time Integer(wait_time) do
+    expect(page).to have_content(content)
+  end
 end
 
 Then(/^it should have a link "(.*)"$/) do |link|
