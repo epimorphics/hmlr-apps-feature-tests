@@ -23,7 +23,7 @@ Feature: ppd
 		And  she chooses the "all" radio button
 		And  she clicks on the "show results" button
 		Then she should retrieve a web page
-		And  it should have content "5 Falcon Road, Plymouth, PL1 4GR"
+		And  after upto 20 seconds it should have content "5 Falcon Road, Plymouth, PL1 4GR"
 		And  it should have content "69 Millbay Road, Plymouth, PL1 3NG"
 		And  it should have content "71 Millbay Road, Plymouth, PL1 3NG"
 		And  it should have content "Flat 9, 15 Ridge Park Road, Plymouth, PL7 2FG"

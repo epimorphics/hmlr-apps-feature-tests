@@ -11,6 +11,6 @@ Feature: download ppd data
 		And  she enters "exeter" in the "town" field
 		And  she clicks on the "show results" button
 		Then she should retrieve a web page
-		And  she clicks on the first "download data" button
+		Then after upto 10 seconds she clicks on the first "download data" button
 		Then she should retrieve a web page
         And  it should have link text "get selected results as CSV with headers" with link ending with ".csv"  
