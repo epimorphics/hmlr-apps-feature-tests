@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'capybara/minitest'
 require 'capybara/minitest/spec'
 require 'minitest/autorun'
@@ -11,12 +13,10 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Capybara configuration
 
 HOST = ENV['TEST_HOST'] || 'lr-pres-dev-c.epimorphics.net'
-PROTO = ENV['TEST_PROTO'] || 'http'
-if ! PROTO.end_with? ":"
-  PROTO = PROTO + ":"
-end
+PROTO = ENV['TEST_PROTO']&.tr(':', '') || 'http'
+
 Capybara.run_server = false
-Capybara.app_host = "#{PROTO}//#{HOST}"
+Capybara.app_host = "#{PROTO}://#{HOST}"
 
 $VERBOSE = nil
 
@@ -40,10 +40,11 @@ Capybara.register_driver :headless_firefox do |app|
                                  options: options)
 end
 
-# To see the Chrome window while tests are running, set this var to true
-see_visible_window_while_test_run = ENV['TEST_BROWSER_VISIBLE']
+# To see the browser window while tests are running, set the
+# environment var TEST_BROWSER_VISIBLE to 1
+browser_visible = ENV['TEST_BROWSER_VISIBLE'] == '1'
 
-# driver = see_visible_window_while_test_run ? :chrome : :headless_chrome
-driver = see_visible_window_while_test_run ? :firefox : :headless_firefox
+# driver = browser_visible ? :chrome : :headless_chrome
+driver = browser_visible ? :firefox : :headless_firefox
 Capybara.default_driver    = driver
 Capybara.javascript_driver = driver
