@@ -76,7 +76,7 @@ variable `RECENT` to any non-empty value:
 RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
 ```
 
-## Tests that don't work a CI environment
+## Tests that don't work in a CI environment
 
 Most tests works in a CI environment, but standard reports tests do not.  To exclude
 these tests:
