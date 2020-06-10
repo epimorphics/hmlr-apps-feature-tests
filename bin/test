@@ -15,33 +15,21 @@ function die_on_failure {
   fi
 }
 
+if [ "$TEST_HOST" == "" ]
+then
+  echo "Please set the TEST_HOST"
+  exit 1
+fi
+
 rm -rf test-output/*
 mkdir -p test-output
 wget -O test-output/test-query "$PROTO//$TEST_HOST/landregistry/query?query=SELECT * { ?s ?p ?o } LIMIT 1"
 die_on_failure 'Test query failed'
 
-tags=""
-
-if [ "${RECENT}1" = '1' ]; then
-  echo 'Running cucumber tests without @recent'
-  tags="${tags}--tags \"not @recent\""
-else
-  echo 'Running cucumber tests, including @recent'
-fi
-
-if  [ -n "${IN_CI}" ]
-then
-  tags="${tags} --tags \"not @ci-exclude\""
-  echo 'Running cucumber tests without @ci-exclude'
-fi
-
-eval "bundle exec cucumber $tags"
-die_on_failure 'Cucumber test suite failed'
-
 bundle exec rake test
 die_on_failure 'Integration test suite failed'
 
-if [ "$TEST_LB" != "true" ] 
+if [ "$TEST_LB" != "true" ]
 then
   echo "running mod_qos test"
 
@@ -54,4 +42,3 @@ then
   "$SCRIPTDIR/test-mod-qos"
   die_on_failure 'mod_qos test failed'
 fi
-
