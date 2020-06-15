@@ -30,19 +30,27 @@ Run `bundle` in the root directory to install Rubygems dependencies.
 
 ## Running the tests
 
-Determine which server is going to be tested, e.g. `lr-ppd-dev-pres`*, then
+Determine which server is going to be tested, e.g. `lr-ppd-dev-pres-1`, then
 
 invoke the tests:
 
 ```sh
-TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+TEST_HOST=lr-ppd-dev-pres-1.epimorphics.net bin/test
 ```
 
 This runs:
 
-- a file download tests
-- legacy integration tests written in cucumber
-- revised integration tests for the updated UKHPI app, running under MiniTest
+- a file download test
+- integration tests for UKHPI, PPD and Standard-Reports apps
+- a mod-QoS test
+
+The service to test can also be a load-balancer, but note that the mod-QoS tests
+do not work in this case. To use a load-balacer as the `TEST_HOST`, set the `TEST_LB`
+environment variable:
+
+```sh
+TEST_LB=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+```
 
 ## Running the tests on the preproduction server
 
@@ -82,7 +90,7 @@ Most tests works in a CI environment, but standard reports tests do not.  To exc
 these tests:
 
 ```sh
-IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+TEST_LB=1 IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
 ```
 
 This tests the dev server via a load balancer.  To test the server directly use
@@ -101,3 +109,5 @@ This tests the dev server via a load balancer.  To test the server directly use
 | `RECENT`               | 1          | *Do* include tests that use recent data     |
 | `TEST_BROWSER_VISIBLE` |            | Use a headless browser to test              |
 | `TEST_BROWSER_VISIBLE` | 1          | Show the browser (e.g. for debugging)       |
+| `TEST_LB`              |            | Not testing a load-balancer, so test modQoS |
+| `TEST_LB`              | 1          | Testing load balancer, so do not test modQoS|
