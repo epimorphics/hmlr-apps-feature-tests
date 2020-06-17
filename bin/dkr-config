@@ -2,6 +2,6 @@
 
 REGISTRY=018852084843.dkr.ecr.eu-west-1.amazonaws.com
 TEST_CONTAINER_NAME=epimorphics/lr-integration-test-container
-TEST_CONTAINER_VERSION=0.0.1-SNAPSHOT
+TEST_CONTAINER_VERSION=0.0.2-SNAPSHOT
 APP=/app
 
