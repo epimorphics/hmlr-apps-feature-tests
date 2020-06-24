@@ -1,4 +1,4 @@
-FROM ubuntu:bionic-20200219
+FROM ubuntu:20.04
 
 SHELL [ "/bin/bash", "-c" ]
 
@@ -6,7 +6,7 @@ USER  root
 
 RUN   set -e ; \
       apt-get update -qq && \
-      apt-get install -qq -y \
+      DEBIAN_FRONTEND="noninteractive" TZ="europe/london" apt-get install -qq -y \
           firefox \
           build-essential \
           patch \
@@ -25,7 +25,7 @@ RUN   adduser --home $APP --shell /bin/bash --gecos "" --disabled-password teste
 
 ADD   --chown=tester:tester ./Gemfile      \
                             ./Rakefile     \
-                                              $APP/
+                            $APP/
 
 WORKDIR $APP
                                               
