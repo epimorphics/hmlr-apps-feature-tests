@@ -28,17 +28,29 @@ There are two ways to run the tests, either in a docker container or natively.
 The docker container provides a stable software environment for running the tests.
 Running natively does not require docker to be installed.
 
-##  Running with Docker
+## Running with Docker
 
-### Setup
+### Docker Setup
 
 - Docker must be installed and the docker daemon running
-- the aws credentials helper should be installed and configured - 
-  see https://github.com/awslabs/amazon-ecr-credential-helper/blob/master/README.md
-  The AWS_PROFILE should be set - defaults to 'lr'
-- to download the container `make install-test-container`
+- either build your own test image with `make test-image`
+- or set up access to the LR container image registry (see below) and run
+  `make install-test-image` to install the container from the registry
+  
+To access the LR container image registry, AWS credentials need to be installed
+and configured.  Access the LR container image registry is needed to download
+a prebuilt container or to publish a new container to the registry.
 
-### Running the tests
+- create an AWS profile for an IAM user with access to the LR container registry
+- see [Amazon AWS credentials documentation](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html)
+  - By default the scripts in this directory will use the profile name `lr`,
+but this can be changed to a name of your choice with
+`export AWS_PROFILE=<profile name>`
+- install the aws credentials helper - this will automatically log your docker
+daemon into the LR container registry - see [Amazon AWS credentials helper
+documentation](https://github.com/awslabs/amazon-ecr-credential-helper/blob/master/README.md)
+
+### Running the tests in a docker container
 
 Standard test configurations can be run using make:
 
@@ -48,11 +60,13 @@ Standard test configurations can be run using make:
 
 Alternatively the test scripts can be run directly, e.g.
 
-```
+```sh
     TEST_HOST=lr-ppd-dev-pres-1.epimorphics.net bin/dkr-test
 ```
+
 or
-```
+
+```sh
    TEST_URL=http://lr-ppd-dev-pres-1.epimorphics.net bin/dkr-test
 ```
 
@@ -62,12 +76,12 @@ to the tests and scripts will be executed by the container.
 
 To get an interactive bash shell in the docker container, e.g. for debugging:
 
-
-```
+```sh
     TEST_CMD="bash -" bin/dkr-test
 ```
 
-Other environment variables that control the execution of the tests are as described below.
+Other environment variables that control the execution of the tests are as
+described below.
 
 ## Running Natively
 
@@ -78,13 +92,13 @@ to manage local Ruby versions on developer machines.
 
 Run `bundle` in the root directory to install Rubygems dependencies.
 
-### Running the tests
+### Running the tests Natively
 
 Determine which server is going to be tested, e.g. `lr-ppd-dev-pres-1`, then
 
 invoke the tests:
 
-```
+```sh
     TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
 ```
 
@@ -98,7 +112,6 @@ The service to test can also be a load-balancer, but note that the mod-QoS tests
 do not work in this case. To use a load-balacer as the `TEST_HOST`, set the `TEST_LB`
 environment variable:
 
-
 ```sh
 TEST_LB=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
 ```
@@ -111,20 +124,25 @@ By default, the tests will omit any tests dependent on there being recent data
 available to test against.  To **include** the recent tests in the test run, set the environment
 variable `RECENT` to any non-empty value:
 
+```sh
     RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
-    
+```
+
 ### Tests that don't work a CI environment
 
 Most tests works in a CI environment, but standard reports tests do not.  To exclude
 these tests:
 
+```sh
     IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+```
 
 ### Testing via a Load Balancer
 
 Some tests, such as the quality of service tests, do not work via a load balancer.
 To disable these tests set the `TEST_LB` environment variable to true:
-```
+
+```sh
    TEST_LB=true TEST_URL=https://landregistry.data.gov.uk bin/test
 ```
 
@@ -132,19 +150,19 @@ To disable these tests set the `TEST_LB` environment variable to true:
 
 `make test-container-image` will build the test container image locally.
 
-`make release-test-image` will push a locally built container image to the LR container registry.
+`make release-test-image` will push a locally built container image to the LR
+container registry.
 
 The registry will not allow redefining an existing tag
 so the container version defined in `bin/dkr-config` must be updated before the
 the new container image is built and pushed.
-
 
 ## Running the tests on the preproduction server
 
 The preprod server is not visible on the open internet.  To run tests on it an
 ssh tunnel must be set up and tests directed to the local end of the tunnel.
 
-The scripts `bin/test-preprod` and bin/dkr-test-preprod set up a tunnel, 
+The scripts `bin/test-preprod` and bin/dkr-test-preprod set up a tunnel,
 run the tests and then tear down the tunnel.
 
 See the script for various parameters that can be set as environment variables.
