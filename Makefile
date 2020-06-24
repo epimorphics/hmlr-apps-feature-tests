@@ -17,13 +17,13 @@ install-test-image:
 	@docker tag ${REGISTRY}/${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION} ${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}
 
 test-dev:
-	TEST_URL=https://lr-ppd-dev-pres.epimorphics.net TEST_LB=true bin/dkr-test
+	TEST_URL=https://lr-ppd-dev-pres.epimorphics.net TEST_LB=1 bin/dkr-test
 
 test-preprod:
 	bin/dkr-test-preprod
 
 test-production:
-	TEST_URL=https://landregistry.data.gov.uk TEST_LB=true bin/dkr-test
+	TEST_URL=https://landregistry.data.gov.uk TEST_LB=1 bin/dkr-test
 	
 test-server:
 	TEST_URL=$(TEST_URL) bin/dkr-test 
