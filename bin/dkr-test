@@ -5,15 +5,6 @@
 
 set -e
 
-function cleanup() {
-  if [[ $HOST_ON_OFF = 1 ]]
-  then 
-    xhost -$HOST_IP
-  fi
-}
-
-trap cleanup EXIT
-
 SCRIPT_DIR=$( dirname "$0" )
 source "$SCRIPT_DIR/dkr-config"
 
@@ -29,7 +20,7 @@ HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
   
 # build the docker command to run the tests in the container
 
-TEST_CMD="${TEST_CMD:-bash bin/test} "
+TEST_CMD="${TEST_CMD:-bin/test} "
 
 
 docker_cmd=" \
@@ -41,9 +32,7 @@ docker_cmd=" \
   --volume=\"$PWD/specs:$APP/specs:ro\" \
   --volume=\"$PWD/bin:/$APP/bin:ro\" \
   --volume=\"$PWD/lib:$APP/lib:ro\" \
-  --add-host "lr-pres-tunnel.epimorphics.net:$HOST_IP" \
   -e IN_CONTAINER=1 \
-  -e HOST_IP=\"$HOST_IP\" \
   -e TEST_BROWSER_VISIBLE=\"$TEST_BROWSER_VISIBLE\" \
   -e TEST_URL=\"$TEST_URL\" \
   -e TEST_HOST=\"$TEST_HOST\" \
@@ -57,7 +46,7 @@ docker_cmd=" \
   fi
   
   docker_cmd="$docker_cmd \
-  \"${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}\" -c \"$TEST_CMD"
+  \"${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}\" \"$TEST_CMD"
   
 # now append the arguments passed to this script
   

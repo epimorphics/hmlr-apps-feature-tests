@@ -18,10 +18,7 @@ export TEST_HOST="lr-pres-tunnel.epimorphics.net:$TEST_PORT"
 export TEST_USER=ubuntu
 export TUNNEL_ENDPOINT=${TUNNEL_ENDPOINT:-lr-ppd-preprod-pres-1}
 
-# this works on a linux or a mac: windows not yet supported
-HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
-
-openSSHTunnel "$TUNNEL_ENDPOINT" "$HOST_IP" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
+openSSHTunnel "$TUNNEL_ENDPOINT" "localhost" "$TEST_PORT" "$TEST_USER" "$SSH_CREDS"
 
 "$SCRIPT_DIR/dkr-test"
 

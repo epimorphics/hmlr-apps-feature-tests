@@ -4,18 +4,18 @@ SHELL [ "/bin/bash", "-c" ]
 
 USER  root
 
-RUN   set -e ; \
-      apt-get update -qq && \
-      DEBIAN_FRONTEND="noninteractive" TZ="europe/london" apt-get install -qq -y \
+RUN   apt-get update -qq
+
+RUN   DEBIAN_FRONTEND="noninteractive" TZ="europe/london" apt-get install -qq -y \
           firefox \
           build-essential \
           patch \
           ruby-dev \
           zlib1g-dev \
           liblzma-dev \
-          openjdk-8-jdk-headless \
           wget \
-          curl 
+          curl \
+          gosu
           
 RUN gem install bundler
 
@@ -29,13 +29,10 @@ ADD   --chown=tester:tester ./Gemfile      \
 
 WORKDIR $APP
                                               
-RUN   bundle install --quiet       
+RUN     bundle install --quiet
 
-USER tester
+COPY    docker/entrypoint /entrypoint
 
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/entrypoint" ]
       
-CMD [ ]
-      
-
-      
+CMD [ "bin/test" ]

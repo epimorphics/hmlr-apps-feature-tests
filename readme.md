@@ -38,24 +38,24 @@ Running natively does not require docker to be installed.
   `make install-test-image` to install the container from the registry
   
 To access the LR container image registry, AWS credentials need to be installed
-and configured.  Access the LR container image registry is needed to download
+and configured.  Access to the LR container image registry is needed to download
 a prebuilt container or to publish a new container to the registry.
 
 - create an AWS profile for an IAM user with access to the LR container registry
-- see [Amazon AWS credentials documentation](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html)
+  - see [Amazon AWS credentials documentation](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html)
   - By default the scripts in this directory will use the profile name `lr`,
 but this can be changed to a name of your choice with
 `export AWS_PROFILE=<profile name>`
 - install the aws credentials helper - this will automatically log your docker
-daemon into the LR container registry - see [Amazon AWS credentials helper
-documentation](https://github.com/awslabs/amazon-ecr-credential-helper/blob/master/README.md)
+daemon into the LR container registry - see [Amazon AWS credentials helper documentation](https://github.com/awslabs/amazon-ecr-credential-helper/blob/master/README.md)
 
 ### Running the tests in a docker container
 
 Standard test configurations can be run using make:
 
 - `make test-dev`
-- `make test-preprod`
+- `make test-preprod` - see [Running the tests on the preproduction server](#running-the-tests-on-the-preproduction-server)
+below for the ssh configuration needed to run these tests
 - `make test-production`
 
 Alternatively the test scripts can be run directly, e.g.
@@ -72,7 +72,7 @@ or
 
 When using docker, the docker image provides only the test environment and software.
 The tests and tests scripts are as defined in the native file system. Any local edits
-to the tests and scripts will be executed by the container.
+to the tests and scripts will be executed in the container.
 
 To get an interactive bash shell in the docker container, e.g. for debugging:
 
@@ -99,7 +99,7 @@ Determine which server is going to be tested, e.g. `lr-ppd-dev-pres-1`, then
 invoke the tests:
 
 ```sh
-    TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+    TEST_HOST=lr-ppd-dev-pres-1.epimorphics.net bin/test
 ```
 
 This runs:
@@ -125,16 +125,16 @@ available to test against.  To **include** the recent tests in the test run, set
 variable `RECENT` to any non-empty value:
 
 ```sh
-    RECENT=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+    RECENT=1 TEST_HOST=lr-ppd-production-pres-1.epimorphics.net bin/test
 ```
 
-### Tests that don't work a CI environment
+### Tests that don't work in a CI environment
 
 Most tests works in a CI environment, but standard reports tests do not.  To exclude
 these tests:
 
 ```sh
-    IN_CI=1 TEST_HOST=lr-ppd-dev-pres.epimorphics.net bin/test
+    IN_CI=1 TEST_HOST=lr-ppd-dev-pres-1.epimorphics.net bin/test
 ```
 
 ### Testing via a Load Balancer
@@ -148,7 +148,7 @@ To disable these tests set the `TEST_LB` environment variable to true:
 
 ## Building the Docker Image
 
-`make test-container-image` will build the test container image locally.
+`make test-image` will build the test container image locally.
 
 `make release-test-image` will push a locally built container image to the LR
 container registry.
@@ -162,12 +162,23 @@ the new container image is built and pushed.
 The preprod server is not visible on the open internet.  To run tests on it an
 ssh tunnel must be set up and tests directed to the local end of the tunnel.
 
-The scripts `bin/test-preprod` and bin/dkr-test-preprod set up a tunnel,
+The scripts `bin/test-preprod` and `bin/dkr-test-preprod` set up a tunnel,
 run the tests and then tear down the tunnel.
 
-See the script for various parameters that can be set as environment variables.
+The scripts assume the following is included in the ~/.ssh/config file:
 
-An entry in `/etc/hosts` is needed to map `lr-pres-tunnel.epimorphics.net` to `localhost`.
+```
+Host lr-ppd-preprod-pres-1
+    HostName      lr-ppd-preprod-pres-1.epimorphics.net
+    User          ubuntu
+    IdentityFile  ~/.ssh/lr.pem
+```
+
+When running the native script, an entry in `/etc/hosts` is needed to map 
+`lr-pres-tunnel.epimorphics.net` to `127.0.0.1`.  This is not needed if
+using the docker container.
+
+See the scripts for various parameters that can be set as environment variables.
 
 To set up an ssh tunnel manually
 
@@ -176,9 +187,9 @@ ssh -L ${PORT}:localhost:80 -fN -i ~/.ssh/lr.pem ubuntu@lr-ppd-preprod-pres-1.ep
 ```
 
 This will start an ssh process to implement the tunnel in the background.
-The ssh process must be killed when finished.
+The background ssh process must be killed when finished.
 
-Point a browser at `http://lr-pres-tunnel.epimorphics.net:${PORT}`.
+The preprod server can then be accessed at `http://lr-pres-tunnel.epimorphics.net:${PORT}`.
 
 ## Full list of test options
 
