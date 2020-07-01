@@ -15,9 +15,6 @@ then
   PROTO="$TEST_PROTO:"
 fi
 
-# this works on a linux or a mac: windows not yet supported
-HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
-  
 # build the docker command to run the tests in the container
 
 TEST_CMD="${TEST_CMD:-bin/test} "
