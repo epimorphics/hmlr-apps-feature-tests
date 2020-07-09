@@ -13,10 +13,7 @@ function openSSHTunnel {
   local test_port="$3"
   local test_user="$4"
   local ssh_creds="$5"
-    
-    # this works on a linux or a mac: windows not yet supported
-  HOST_IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
-  
+     
   cmd="ssh "$ssh_creds" -fN -L $local_host:${test_port}:localhost:80 ${test_user}@$tunnel_endpoint"
   eval "$cmd"
   SSH_PID=$( pgrep -f "ssh.*-fN -L [^:]*:${test_port}:localhost:80" )
