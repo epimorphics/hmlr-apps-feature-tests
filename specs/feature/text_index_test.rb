@@ -9,9 +9,11 @@ describe 'the Lucene text index' do
     visit '/app/ppd'
     fill_in('town', with: 'plymouth')
     fill_in('street', with: 'the')
-    fill_in('min_date', with: '1 Apr 2014')
-    fill_in('max_date', with: '30 Apr 2014')
+
+    fill_in('min_date', with: '2014-04-01')
+    fill_in('max_date', with: '2014-04-30')
     choose('all')
+
     click_on('show results')
 
     using_wait_time(20) do
@@ -29,8 +31,8 @@ describe 'the Lucene text index' do
       visit '/app/ppd'
       fill_in('town', with: 'plymouth')
       fill_in('street', with: 'the')
-      fill_in('min_date', with: first_of_month.strftime('%-d %b %Y'))
-      fill_in('max_date', with: last_of_month.strftime('%-d %b %Y'))
+      fill_in('min_date', with: first_of_month.strftime('%Y-%m-%d'))
+      fill_in('max_date', with: last_of_month.strftime('%Y-%m-%d'))
 
       choose('all')
       click_on('show results')
