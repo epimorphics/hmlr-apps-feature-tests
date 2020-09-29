@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# script that runs on a host system to run tests in a container.
+#
+
+set -e
+
+SCRIPT_DIR=$( dirname "$0" )
+source "$SCRIPT_DIR/dkr-config"
+
+# usually testing a specific server so use http by default
+TEST_PROTO=${TEST_PROTO:-http}
+if ! [[ "$PROTO" == *: ]]
+then
+  PROTO="$TEST_PROTO:"
+fi
+
+# build the docker command to run the tests in the container
+
+TEST_CMD="${TEST_CMD:-bin/test} "
+
+
+docker_cmd=" \
+  docker run -it --rm \
+  --hostname=lr-integration-test \
+  --name=lr-integration-test \
+  --workdir=\"$APP\" \
+  --volume=\"$PWD/features:$APP/features:ro\" \
+  --volume=\"$PWD/specs:$APP/specs:ro\" \
+  --volume=\"$PWD/bin:/$APP/bin:ro\" \
+  --volume=\"$PWD/lib:$APP/lib:ro\" \
+  -e IN_CONTAINER=1 \
+  -e TEST_BROWSER_VISIBLE=\"$TEST_BROWSER_VISIBLE\" \
+  -e TEST_URL=\"$TEST_URL\" \
+  -e TEST_HOST=\"$TEST_HOST\" \
+  -e TEST_PROTO=\"$TEST_PROTO\" \
+  -e TEST_LB=\"$TEST_LB\" \
+  -e IN_CI=\"$IN_CI\" "
+  
+  if ! [ -z ${RECENT+x} ];
+  then
+    docker_cmd="$docker_cmd -e RECENT=\"$RECENT\""
+  fi
+  
+  docker_cmd="$docker_cmd \
+  \"${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}\" \"$TEST_CMD"
+  
+# now append the arguments passed to this script
+  
+for p in "$@"
+do
+  docker_cmd="$docker_cmd \\\"$p\\\""
+done
+
+# and finally the closing quote
+
+docker_cmd="$docker_cmd\""
+
+# now show and execute it
+
+if [[ DEBUG = 1 ]]
+then
+  echo "$docker_cmd"
+fi
+
+eval "$docker_cmd"
+
+echo "test run complete"

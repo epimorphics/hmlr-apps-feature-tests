@@ -1,0 +1,31 @@
+# common functions used by local scripts
+
+function verify-etc-hosts {
+  cat /etc/hosts | grep "^127.0.0.1" \
+  | grep -E '^127.0.0.1[[:space:]]+lr-pres-tunnel.epimorphics.net' /etc/hosts \
+  > /dev/null || ( echo "\"127.0.0.1 lr-pres-tunnel.epimorphics.net\" must be set in /etc/hosts" ; exit 1 )   
+}
+
+function openSSHTunnel {
+
+  local tunnel_endpoint="$1"
+  local local_host="$2"
+  local test_port="$3"
+  local test_user="$4"
+  local ssh_creds="$5"
+     
+  cmd="ssh "$ssh_creds" -fN -L $local_host:${test_port}:localhost:80 ${test_user}@$tunnel_endpoint"
+  eval "$cmd"
+  SSH_PID=$( pgrep -f "ssh.*-fN -L [^:]*:${test_port}:localhost:80" )
+  echo "created ssh tunnel $SSH_PID"
+  echo
+}
+
+function closeSSHTunnel {
+  if [ -n "$SSH_PID" ]
+  then
+    echo "closing SSH tunnel $SSH_PID"
+    kill "$SSH_PID"
+    echo
+  fi
+}

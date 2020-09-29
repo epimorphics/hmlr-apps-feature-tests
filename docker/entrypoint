@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# add lr-pres-tunnel.epimorphics.net to etc hosts
+HOST_IP=$( getent hosts host.docker.internal | awk '{ print $1 }' )
+echo "$HOST_IP lr-pres-tunnel.epimorphics.net" >> /etc/hosts
+
+# drop priviledges and run the tests as user 'tester'
+
+exec gosu tester $@
