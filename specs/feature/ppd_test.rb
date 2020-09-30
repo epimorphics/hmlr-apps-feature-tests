@@ -23,8 +23,8 @@ describe 'price paid data for houses' do
     visit '/app/ppd'
     fill_in('town', with: 'plymouth')
     uncheck('not new-build')
-    fill_in('min_date', with: '1 Apr 2014')
-    fill_in('max_date', with: '30 Apr 2014')
+    fill_in('min_date', with: '2014-04-01')
+    fill_in('max_date', with: '2014-04-30')
     choose('all')
     click_on('show results')
 
