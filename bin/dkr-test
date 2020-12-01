@@ -21,6 +21,7 @@ TEST_CMD="${TEST_CMD:-bin/test}"
 
 docker_cmd=" \
   docker run -it --rm \
+  --network=host \
   --hostname=lr-integration-test \
   --name=lr-integration-test \
   --workdir=\"$APP\" \
