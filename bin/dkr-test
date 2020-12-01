@@ -17,8 +17,7 @@ fi
 
 # build the docker command to run the tests in the container
 
-TEST_CMD="${TEST_CMD:-bin/test} "
-
+TEST_CMD="${TEST_CMD:-bin/test}"
 
 docker_cmd=" \
   docker run -it --rm \
@@ -44,7 +43,7 @@ docker_cmd=" \
   
   docker_cmd="$docker_cmd \
   \"${TEST_CONTAINER_NAME}:${TEST_CONTAINER_VERSION}\" \"$TEST_CMD"
-  
+
 # now append the arguments passed to this script
   
 for p in "$@"
