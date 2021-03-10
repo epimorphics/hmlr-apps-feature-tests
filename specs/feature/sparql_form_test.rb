@@ -8,7 +8,7 @@ describe 'the SPARQL query form' do
   it 'present the SPARQL Qonsole form' do
     visit '/app/qonsole'
     body = page.body
-    page.must_have_title('Welcome to House Price Data from HM Land Registry')
+    page.must_have_title('HM Land Registry Open Data')
 
     expectations = [
       /<link rel="stylesheet"[^>]*application-[0-9a-f]*.css/,

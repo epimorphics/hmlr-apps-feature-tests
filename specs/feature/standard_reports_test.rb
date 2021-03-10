@@ -14,7 +14,7 @@ describe 'the Standard Reports workflow' do
   it 'presents the standard reports form' do
     visit '/app/standard-reports'
     body = page.body
-    page.must_have_title('HM Land Registry house price data')
+    page.must_have_title('HM Land Registry Open Data')
 
     expectations = [
       /<link rel="stylesheet"[^>]*application-[0-9a-f]*.css/,
