@@ -45,4 +45,12 @@ describe 'price paid data for houses' do
     click_on('show results')
     page.must_have_content('5 Adam & Eve Mews, London, W8 6UG')
   end
+
+  it 'should return results when the search contains a locality' do
+    visit '/app/ppd'
+    fill_in('locality', with: 'thurloxton')
+    choose('all')
+    click_on('show results')
+    page.must_have_content('Manor Cottage, Taunton, TA2 8RH')
+  end
 end
