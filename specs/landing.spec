@@ -41,3 +41,12 @@ Users can navigate to other sub applications from the landing page
 * Clicking 'Standard-reports' will route users to the standard reports app
 * Clicking 'SPARQL query' will route users to the console query page
 * Clicking logo in top left navigates users to the Gov.uk site relating to the land registry
+* When the browser width is reduced the navigation layout will change
+
+## Navigation
+
+Tags: navigation
+
+* Clicking 'UK House Price Index' will route users to the UKHPI app
+* The primary navigation displays different options relating to UKHPI
+* All other sub-applications retain the navigation structure of the landing page
