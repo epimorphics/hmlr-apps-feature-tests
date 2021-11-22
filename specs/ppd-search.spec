@@ -177,6 +177,19 @@ Tags: Search
 * First result item address displays as 'Rose Cottage, Lower Gustard Wood, St Albans, AL4 8RU'
 * Reset the form
 
+## Large queries
+
+Tags: Search
+
+* Type "Birmingham" into the "Town or city" field
+* Select 'all' from the 'How many results?' radio list
+* Clicking show results will route User to the search results page after '1m 40s'
+* Summary will display 'Found 388822 transactions'
+* Summary will display 'for 227036 properties'
+* A warning is visible with the phrase 'We have limited this page to 5000 results'
+* First result item address displays as 'Apartment 2109, 10 Holloway Circus Queensway, Birmingham, B1 1BA'
+* Reset the form
+
 ## Help
 
 * Clicking 'Help' button will open a modal dialogue window with Help text
