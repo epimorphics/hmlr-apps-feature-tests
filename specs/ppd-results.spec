@@ -61,6 +61,8 @@ Tags: results
 Tags: results
 
 * A result item has a postal address as title
-* A result item has a list of transaction History with an external link to the Elda API
-* A result item has a list of address values with a query link will requery the search with new parameters
-* A result item has a list of Attributes where applicable
+* A result item has a list of transaction History with at least one or more item
+* Clicking the transaction history external link will route User to the Elda API populated with property transaction data
+* A result item has a list of address values
+* Clicking the address value magnifiying glass icon will requery the search with new parameters
+* A result item has a list of Attributes where applicable with at least one or more item
