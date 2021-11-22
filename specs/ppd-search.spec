@@ -212,8 +212,8 @@ Tags: Search
 ## Help
 
 * Clicking 'Help' button will open a modal dialogue window with Help text
-* You can link to troubleshooting guidance from here
-* You can close the modal dialogue by clicking the cross icon
+* The User can link to troubleshooting guidance from here
+* The User can close the modal dialogue by clicking the cross icon
 
 ## Reset form
 
