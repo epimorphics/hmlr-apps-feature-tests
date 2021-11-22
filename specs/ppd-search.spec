@@ -141,15 +141,34 @@ Tags: Search
 
 Tags: Search
 
-// TODO - whats happens with incorrect date range?
-// TODO - whats happens with small date range i.e. 1 day?
-
 * Type "Rose Cottage" into the "Building name or number" field
 * Select '22/11/2020' in the 'earliest' field
 * Select '22/11/2021' in the 'latest' field
 * Clicking show results will route User to the search results page
 * Summary will display '273 matching transactions'
 * First result item address displays as 'Rose Cottage, Malt Mill Lane, Halesowen, B62 8JE'
+* Reset the form
+
+## Small date range
+
+Tags: Search
+
+* Type "Rose Cottage" into the "Building name or number" field
+* Select '19/11/2021' in the 'earliest' field
+* Select '22/11/2021' in the 'latest' field
+* Clicking show results will route User to the search results page
+* Summary will display '0 transactions'
+* Reset the form
+
+## Invalid date range (earliest date occurs after latest date)
+
+Tags: Search
+
+* Type "Rose Cottage" into the "Building name or number" field
+* Select '22/11/2021' in the 'earliest' field
+* Select '22/11/2020' in the 'latest' field
+* Clicking show results will route User to the search results page
+* Summary will display '0 transactions'
 * Reset the form
 
 ## Limit results to 1000
