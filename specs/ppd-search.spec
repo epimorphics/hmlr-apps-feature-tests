@@ -76,7 +76,7 @@ Tags: Search
 * Clicking show results will route User to the search results page
 * Summary will display '10000 or more matching transactions'
 * Summary will display '61 properties'
-* First result item address displays as 'Rose Cottage, North Road, Wells, BA5 1LA'
+* First result item address displays as '1 Moreton Avenue, Plymouth, PL6 5AZ'
 * Reset the form
 
 // NB: full postcode supplied returns 0 results every time. Is that a bug?
