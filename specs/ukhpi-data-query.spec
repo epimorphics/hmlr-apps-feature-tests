@@ -114,7 +114,6 @@ Tags: query, filter, dates
 * A User can click 'confirm' button
 * The modal dialogue will close and the date range query parameter will inform user an empty field is an 'Invalid date'
 
-
 ## invalid date range - start date after end date
 
 Tags: query, filter, dates

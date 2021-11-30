@@ -79,8 +79,6 @@ Tags: Search
 * First result item address displays as '1 Moreton Avenue, Plymouth, PL6 5AZ'
 * Reset the form
 
-// NB: full postcode supplied returns 0 results every time. Is that a bug?
-
 ## Property type filter
 
 Tags: Search

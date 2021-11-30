@@ -2,15 +2,13 @@
 
 Tags: UKHPI
 
-## Query results default layout
+## Query results default parameters
 
 Tags: data, results
 
-// TODO
-- specify what the default values are to 'the latest month for which data is available'
-from ' 12 months prior to that' then create re-usable task which creates a preset param
-
-* Default query is set to 'United Kingdom' and 'October 2020 to October 2021'
+* Application will default to display the query end period 'the latest month for which data is available'
+* Application will default to display the query start period '12 months prior' to the 'end period'
+* Application will default to show location of 'United Kingdom'
 
 ## Chart sections - type of property
 
@@ -71,7 +69,7 @@ Tags: data, results
 
 Tags: data, results
 
-* Default query is set to 'United Kingdom' and 'October 2020 to October 2021'
+* Set query to 'United Kingdom' and 'October 2020 to October 2021'
 * Click to expand the view of 'Average price by type of property'
 * Clicking 'See data table' tab shows tabular data of query
 * Table row display for 'Date' 'Oct 2020' value is '£243.821'
@@ -83,10 +81,9 @@ Tags: data, results
 
 Tags: data, results
 
-* Default query is set to 'United Kingdom' and 'October 2020 to October 2021'
+* Set query to 'United Kingdom' and 'October 2020 to October 2021'
 * Click to expand the view of 'Average price by type of property'
 * Clicking 'Download this data' tab shows a selection of download links to view data exports
 * Clicking the 'download CSV/spreadsheet' button will prompt a CSV file download
 * Clicking the 'download JSON' button will prompt a JSON download
 * Clicking the 'try the SPARQL query' link will open the SPARQL console with the query pre-populated
-
