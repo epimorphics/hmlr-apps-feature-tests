@@ -6,6 +6,10 @@ Tags: UKHPI
 
 Tags: data, results
 
+// TODO
+- specify what the default values are to 'the latest month for which data is available'
+from ' 12 months prior to that' then create re-usable task which creates a preset param
+
 * Default query is set to 'United Kingdom' and 'October 2020 to October 2021'
 
 ## Chart sections - type of property
@@ -61,6 +65,7 @@ Tags: data, results
 * The line graph defaults to showing 'All property types'
 * The User can select property type checkboxes to add data points to line graph
 * The User can click the magnifying glass icon to view the line graph in a modal dialogue
+* The User can click on the chart to view the line graph in a modal dialogue
 
 ## View data table tab
 
@@ -85,34 +90,3 @@ Tags: data, results
 * Clicking the 'download JSON' button will prompt a JSON download
 * Clicking the 'try the SPARQL query' link will open the SPARQL console with the query pre-populated
 
-## Compare with another location tab
-
-Tags: data, results, compare
-
-* Default query is set to 'United Kingdom' and 'October 2020 to October 2021'
-* Click to expand the view of 'Average price by type of property'
-* Clicking 'Compare with location' displays a location selection control
-* Click 'select another location'
-* Type 'London' and press enter
-* The User is routed to the 'compare locations' page with the query prepopulated
-* A data table is visible showing data for the locations and date range specified
-
-## Compare locations view - query parameters
-
-Tags: data, results, compare
-
-* A User can select Data type options from the Compare select menu
-* The table of date will refresh based on new query parameters added
-* A User can select the type of query option from the type select menu
-* The table of date will refresh based on new query parameters added
-* A User can specify a date range from the Date range edit control
-* The table of date will refresh based on new query parameters added
-
-## Compare locations view - location parameters
-
-* A User can select up to 5 locations using the location edit control
-* A new column is added for each location specified
-* Clicking the 'CSV/spreadsheet' button will prompt a CSV file download
-* Clicking the 'JSON' button will prompt a JSON download
-* Clicking 'print this table' will open a new browser window showing a printable view of data
-* The print control will open

@@ -64,5 +64,20 @@ Tags: results
 * A result item has a list of transaction History with at least one or more item
 * Clicking the transaction history external link will route User to the Elda API populated with property transaction data
 * A result item has a list of address values
-* Clicking the address value magnifiying glass icon will requery the search with new parameters
-* A result item has a list of Attributes where applicable with at least one or more item
+
+## Results list query within
+
+Tags: results
+
+* Reset the form
+* Type "Rose Cottage" into the "Building name or number" field
+* Type "Devon" into the "County" field
+* Clicking show results will route User to the search results page
+* Summary will display 'from 460 matching transactions'
+* Summary will display '45 properties'
+* First Result item displays 'Rose Cottage, High Street, Sidmouth, EX10 0DU'
+* Clicking the magnifiying glass icon adjacent to 'East Devon' will requery the search
+* Search summary now displays 'district matches 'EAST DEVON'
+* Summary will display '81 transactions'
+* Summary will display '50 properties'
+* First Result item displays 'Briar Rose Cottage, Lyme Regis, DT7 3RN'
