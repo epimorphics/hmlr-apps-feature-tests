@@ -28,7 +28,7 @@ describe 'price paid data for houses' do
     choose('all')
     click_on('show results')
 
-    using_wait_time(20) do
+    using_wait_time(50) do
       page.must_have_content('69 Millbay Road, Plymouth, PL1 3NG')
       page.must_have_content('71 Millbay Road, Plymouth, PL1 3NG')
       page.must_have_content('Flat 9, 15 Ridge Park Road, Plymouth, PL7 2FG')
